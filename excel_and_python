@@ -1,0 +1,40 @@
+import pandas as pd
+
+sample_1 = pd.read_excel('C:/Users/user/Downloads/datasalon-master/datasalon-master/02_개정판/2_Data_Analysis_Basic/files/sample_1.xlsx',
+                        header = 1,
+                        skipfooter = 2,
+                        usecols = 'a:c')
+
+sample_1['기준년월'] = '2021-04-22'
+
+code_master = pd.read_excel('C:/Users/user/Downloads/datasalon-master/datasalon-master/02_개정판/2_Data_Analysis_Basic/files/sample_codemaster.xlsx')
+
+sample_1_code = pd.merge(left = sample_1,
+                        right = code_master,
+                        how = 'left',
+                        left_on = '국적코드',
+                        right_on = '국적코드')
+
+sample_2 = pd.read_excel('C:/Users/user/Downloads/datasalon-master/datasalon-master/02_개정판/2_Data_Analysis_Basic/files/sample_2.xlsx',
+                        header = 1,
+                        skipfooter = 2,
+                        usecols = 'a:c')
+#column 추가
+sample_2['기준년월'] = '2021-04-21'
+
+#옆으로 붙이기
+sample_2_code = pd.merge(left = sample_2,
+                        right = code_master,
+                        how = 'left',
+                        left_on = '국적코드',
+                        right_on = '국적코드')
+
+#아래로 붙이기
+sample = sample_1_code.append(sample_2_code, ignore_index = True)
+
+
+sample_pivot = sample.pivot_table(values = '입국객수',
+                                 index = '국적명',
+                                 columns = '기준년월',
+                                 aggfunc = 'mean')
+sample
