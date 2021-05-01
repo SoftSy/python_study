@@ -1,0 +1,29 @@
+import pandas as pd
+
+f = open("C:/Users/USER/Desktop/jpypedata1.txt", "r")
+
+lines = f.read()
+
+from konlpy.tag import Twitter
+
+nlpy = Twitter()
+nouns = nlpy.nouns(lines)
+
+#print(nouns)
+
+
+
+def counter(input_list):
+    word_count = {}
+    for word in nouns:
+        if word in  word_count:
+            word_count[word] += 1
+        else:
+            word_count[word] = 1
+    return word_count
+    
+word_count = counter(nouns)
+word_count
+
+word_count = sorted(word_count.items(), key=lambda x:x[1], reverse=True)
+word_count
